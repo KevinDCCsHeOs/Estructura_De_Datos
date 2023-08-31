@@ -1,9 +1,13 @@
-package Equipo10;
+package Equipo_10;
 
-import Equipo10.*;
+import java.util.Vector;
+import Equipo10.Alumno;
+import Equipo10.Docente;
+import Equipo10.Materias;
+import Equipo10.Tools;
 
 public class Test {
-
+	
 	public static void main(String[] args) {
 		CapturaDatos();
 	}
@@ -14,9 +18,9 @@ public class Test {
 		int tamAlu = Tools.leerEntero("Dame el numero de alumnos a crear: "), incAlu = 0;
 		int tamDoc = Tools.leerEntero("Dame el numero de docentes a crear: "), incDoc = 0;
 		int tamMat = Tools.leerEntero("Dame el numero de materias a crear: "), incMat = 0;
-		Alumno alumnos[] = new Alumno[tamAlu];
-		Docente docentes[] = new Docente[tamDoc];
-		Materias materias[] = new Materias[tamMat];
+		Vector<Alumno> alumnos = new Vector<>(tamAlu);
+		Vector<Docente> docentes = new Vector<>(tamDoc);
+		Vector<Materias> materias = new Vector<>(tamMat);
 		
 		do {
 			sel = Tools.Desplegable("¿Qué accion quieres realizar?",
@@ -24,43 +28,43 @@ public class Test {
 			switch(sel) {
 			case "Crear Alumno":
 				if (incAlu < tamAlu) {
-					alumnos[incAlu] = new Alumno(Tools.leerString("Dame el nombre del Alumno: "),
+					alumnos.add( new Alumno(Tools.leerString("Dame el nombre del Alumno: "),
 							Tools.leerString("Dame el numero de control del Alumno: "),
-							Tools.leerByte("Dame la edad del Alumno: "));
+							Tools.leerByte("Dame la edad del Alumno: ")));
 					incAlu++;
 				} else 
 					Tools.salidaError("Lista de alumnos llena");
 				break;
 			case "Crear Docente":
 				if (incDoc < tamDoc) {
-					docentes[incDoc] = new Docente(Tools.leerString("Dame el numero de control del Docente : "),
-							Tools.leerString("Dame el nombre del Docente: "));
+					docentes.add( new Docente(Tools.leerString("Dame el numero de control del Docente : "),
+							Tools.leerString("Dame el nombre del Docente: ")));
 					incDoc++;
 				} else 
 					Tools.salidaError("Lista de alumnos llena");
 				break;
 			case "Crear Materia":
 				if (incMat < tamMat) {
-					materias[incMat] = new Materias(Tools.leerString("Dame el codigo de la Materia : "),
-							Tools.leerString("Dame el nombre de la Materia: "));
+					materias.add( new Materias(Tools.leerString("Dame el codigo de la Materia : "),
+							Tools.leerString("Dame el nombre de la Materia: ")));
 					incMat++;
 				} else 
 					Tools.salidaError("Lista de materias llena");
 				break;
 			case "Buscar informacion del Alumno":
-				Tools.imprimeSalida("Alumnos registrados\n" + imprimeDatosAlumnos( tamAlu , alumnos ));
-				Tools.imprimePantalla(buscarAlumno(tamAlu, alumnos, Tools.leerString("Nombre o numero de control a buscar: ")));
+				Tools.imprimeSalida("Alumnos registrados\n" + imprimeDatosAlumnos( alumnos ));
+				Tools.imprimePantalla(buscarAlumno( alumnos, Tools.leerString("Nombre o numero de control a buscar: ")));
 				break;
 			case "Asignar Docente a materia":
 				if (incMat == 0 || incDoc == 0)
 					Tools.salidaError("No hay materias/Docentes aun registrados");
 				else {
-					Tools.imprimeSalida("Docentes Disponibles\n" + imprimeDatosDocentes(tamDoc, docentes) +
-			                "\nMaterias Disponibles\n" + imprimeMaterias(tamMat, materias));
+					Tools.imprimeSalida("Docentes Disponibles\n" + imprimeDatosDocentes(docentes) +
+			                "\nMaterias Disponibles\n" + imprimeMaterias(materias));
 					boolean tr = true;
 			        byte d = Tools.leerByte("Escoge un número del registro de docentes");
 			        do {
-			        	if ( d < incDoc && d >= 0) {
+			        	if ( d >= 0 && d < docentes.size()) {
 			        		tr = false;
 			        	} else {
 			        		d = Tools.leerByte("Escoge un número del registro de docentes entre :" + 0 + " y " + incDoc);
@@ -69,26 +73,26 @@ public class Test {
 			        byte m = Tools.leerByte("Escoge un número del registro de materias");
 			        tr = true;
 					do {
-						if( m < incMat && m >= 0) {
+						if( m < docentes.size() && m >= 0) {
 							tr = false;
 						} else {
 			        		m = Tools.leerByte("Escoge un número del registro de docentes entre :" + 0 + " y " + incMat);
 			        	}
 					}while(tr);
-			        materias[m].setDocente(docentes[d]);
+					materias.get(m).setDocente(docentes.get(d));
 				}
 				break;
 			case "Asignar materia a alumno":
 				if (incMat == 0 || incAlu == 0 || incDoc == 0)
 					Tools.salidaError("No hay materias aun registradas o alumnos");
 				else {
-					Tools.imprimeSalida("Alumnos registrados\n" + imprimeDatosAlumnos( tamAlu , alumnos ) +
-										"\nMaterias Disponibles\n" + imprimeMaterias(tamMat , materias));
+					Tools.imprimeSalida("Alumnos registrados\n" + imprimeDatosAlumnos( alumnos ) +
+										"\nMaterias Disponibles\n" + imprimeMaterias( materias));
 					boolean tr = true;
 					byte a = Tools.leerByte("Escoge un numero del registro de alumnos");
 					do {
-							tr = false;
 							if( a < incAlu && a >= 0) {
+								tr = false;
 						} else {
 			        		a = Tools.leerByte("Escoge un número del registro de docentes entre :" + 0 + " y " + incAlu);
 			        	}
@@ -102,7 +106,7 @@ public class Test {
 			        		m = Tools.leerByte("Escoge un número del registro de docentes entre :" + 0 + " y " + incMat);
 			        	}
 					}while(tr);
-					alumnos[a].AgregarMateria(materias[m]);
+					alumnos.get(a).AgregarMateria(materias.get(m));
 				}
 				break;
 			case "Salir":
@@ -113,40 +117,41 @@ public class Test {
 		
 	}
 	
-	public static String imprimeDatosAlumnos(int tam, Alumno alumnos[]) {
+	public static String imprimeDatosAlumnos( Vector<Alumno> alumnos) {
 		String cad = "";
-		for (byte i = 0; i < tam; i++) 
-			if ( alumnos[i] != null )
-				cad += i + ".-" + alumnos[i].toString() + "\n";
+		for (byte i = 0; i < alumnos.size(); i++) 
+			if ( alumnos.get(i) != null )
+				cad += i + ".-" + alumnos.get(i) + "\n";
 		return cad;
 	}
 	
-	public static String imprimeDatosDocentes(int tam, Docente docente[]) {
+	public static String imprimeDatosDocentes( Vector<Docente> docente) {
 		String cad = "";
-		for (byte i = 0; i < tam; i++)
-			if (docente[i] != null) 
-				cad += docente[i].toString() + "\n";
+		for (byte i = 0; i < docente.size() ; i++)
+			if (docente.get(i) != null) 
+				cad += docente.get(i) + "\n";
 		return cad;
 	}
 	
-	public static String imprimeMaterias(int tam, Materias materias[]) {
+	public static String imprimeMaterias( Vector<Materias> materias) {
 		String cad = "";
-		for (byte i = 0; i < tam; i++)
-			if (materias[i] != null)
-				cad += i + ".-" + materias[i].toString2() + "\n";
+		for (byte i = 0; i < materias.size(); i++)
+			if (materias.get(i) != null)
+				cad += i + ".-" + materias.get(i).toString2() + "\n";
 		return cad;
 	}
 	
-	public static String buscarAlumno(int tam, Alumno alumnos[], String dato) {
-		String cad = "No se encuentra el alumno";
-		for (byte i = 0; i < tam; i++) {
-			if (alumnos[i] != null) {
-				if (alumnos[i].getNumcontrol().equals(dato) || alumnos[i].getNombre().equals(dato)) {
-					cad = alumnos[i].toString() + "\n" + alumnos[i].ImprimeMaterias();
-				}
-			}
-		}
-		return cad;
+	public static String buscarAlumno( Vector<Alumno> alumnos, String dato) {
+	    String cad = "No se encuentra el alumno";
+	    for (int i = 0; i < alumnos.size(); i++) {
+	        Alumno alumno = alumnos.get(i);
+	        if (alumno != null) {
+	            if (alumno.getNumcontrol().equals(dato) || alumno.getNombre().equals(dato)) {
+	                cad = alumno.toString() + "\n" + alumno.ImprimeMaterias();
+	            }
+	        }
+	    }
+	    return cad;
 	}
 
 }

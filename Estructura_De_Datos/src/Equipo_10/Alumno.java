@@ -1,11 +1,16 @@
-package Equipo10;
+package Equipo_10;
+
+import java.util.Vector;
+
+import Equipo10.Materias;
+import Equipo10.Tools;
 
 public class Alumno {
 	
 	private String nombre;
 	private String numcontrol;
 	private byte edad;
-	private Materias materias[] = new Materias[8];
+	private Vector<Materias> materias = new Vector<>(8);
 	private byte f = 0;
 
 	public Alumno() { }
@@ -48,8 +53,8 @@ public class Alumno {
 	public String ImprimeMaterias() {
 		String cad = ""; 
 		for (byte i = 0; i < 8; i++) {
-			if (materias[i] != null) {
-				cad += "\n" + materias[i].toString2() + "\n";
+			if (materias.get(i) != null) {
+				cad += "\n" + materias.get(i).toString2() + "\n";
 			}
 		}
 		return cad;
@@ -57,7 +62,7 @@ public class Alumno {
 	
 	public void AgregarMateria(Materias materia) {
 		if (f < 8) {
-	        materias[f] = materia;
+	        materias.add(f, materia);
 	        f++;
 	    } else 
 	        Tools.salidaError("Lista de materias llena");
