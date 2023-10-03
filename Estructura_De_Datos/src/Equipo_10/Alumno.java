@@ -2,8 +2,8 @@ package Equipo_10;
 
 import java.util.Vector;
 
-import Equipo10.Materias;
-import Equipo10.Tools;
+import Equipo_10.Materias;
+import Equipo_10.Tools;
 
 public class Alumno {
 	

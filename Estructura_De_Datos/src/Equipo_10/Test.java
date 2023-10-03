@@ -1,10 +1,7 @@
 package Equipo_10;
 
 import java.util.Vector;
-import Equipo10.Alumno;
-import Equipo10.Docente;
-import Equipo10.Materias;
-import Equipo10.Tools;
+import Equipo_10.*;
 
 public class Test {
 	

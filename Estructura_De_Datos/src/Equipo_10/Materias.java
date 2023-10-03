@@ -2,7 +2,7 @@ package Equipo_10;
 
 import java.util.Vector;
 
-import Equipo10.Docente;
+import Equipo_10.Docente;
 
 public class Materias {
 	
@@ -15,6 +15,7 @@ public class Materias {
 	public Materias(String codigoMateria, String nomMateria) {
 		this.codigoMateria = codigoMateria;
 		this.nomMateria = nomMateria;
+		this.docente = new Vector<>();
 	}
 
 	public String getCodigoMateria() {
@@ -38,7 +39,7 @@ public class Materias {
 	}
 
 	public void setDocente(Vector<Docente> docente) {
-	    this.docente = docente;
+		this.docente = docente;
 	}
 
 	@Override
