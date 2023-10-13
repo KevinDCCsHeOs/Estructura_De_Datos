@@ -11,7 +11,7 @@ public class ColaSupermercado {
 		String sel= "";
 		
 		do {
-			sel = Tools.Desplegable("Escoge una opción","Agregar nuevo cliente a la cola,Ver tamaño de la cola,Ver clientes en cola,"
+			sel = Tools.Desplegable("Menú colas","Agregar nuevo cliente a la cola,Ver tamaño de la cola,Ver clientes en cola,"
 					+ "Ver el primer cliente a atender,Ver si cola esta vacia,Atender cliente,Salir");
 			
 			switch(sel) {
